@@ -31,7 +31,7 @@ char *get_path(char **environ)
 		}
 		environ++;
 	}
-	return ("");
+	return ("not found");
 }
 
 char *search_command_path(char **environ, char *command)
@@ -52,7 +52,13 @@ char *search_command_path(char **environ, char *command)
 		}
 		path_array++;
 	}
-	return ("");
+	return ("not found");
+}
+
+void close_pipe(int *pipefd)
+{
+	close(pipefd[0]);
+	close(pipefd[1]);
 }
 
 int main(void)
@@ -62,23 +68,22 @@ int main(void)
 	char *cmd1[] = {"ls", "-l", NULL};
 	char *cmd2[] = {"wc", "-l", NULL};
 	char *path;
+	int status;
+	pid_t pid;
 
 	pipe(pipefd);
-	pid_t pid = fork();
+	pid = fork();
 	if (pid == 0)
 	{
-		close(pipefd[0]);
 		dup2(pipefd[1], 1);
-		close(pipefd[1]);
+		close_pipe(pipefd);
 		path = search_command_path(environ, cmd1[0]);
 		execve(path, cmd1, environ);
 	}
 
-	int status;
 	waitpid(pid, &status, 0);
-	close(pipefd[1]);
 	dup2(pipefd[0], 0);
-	close(pipefd[0]);
+	close_pipe(pipefd);
 	path = search_command_path(environ, cmd2[0]);
 	execve(path, cmd2, environ);
 
