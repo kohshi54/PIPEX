@@ -61,15 +61,21 @@ void close_pipe(int *pipefd)
 	close(pipefd[1]);
 }
 
-int main(void)
+int main(int argc, char *argv[])
 {
 	extern char **environ;
 	int pipefd[2];
-	char *cmd1[] = {"ls", "-l", NULL};
-	char *cmd2[] = {"wc", "-l", NULL};
+	char **cmd1;
+	char **cmd2;
 	char *path;
 	int status;
 	pid_t pid;
+
+	if (argc != 5)
+		return (0);
+
+	cmd1 = ft_split(argv[2], ' ');
+	cmd2 = ft_split(argv[3], ' ');
 
 	pipe(pipefd);
 	pid = fork();
