@@ -70,6 +70,8 @@ int main(int argc, char *argv[])
 	char *path;
 	int status;
 	pid_t pid;
+	int fd;
+	int fd2;
 
 	if (argc != 5)
 		return (0);
@@ -81,7 +83,7 @@ int main(int argc, char *argv[])
 	pid = fork();
 	if (pid == 0)
 	{
-		int fd = open(argv[1], O_RDONLY);
+		fd = open(argv[1], O_RDONLY);
 		dup2(fd, 0);
 		dup2(pipefd[1], 1);
 		close_pipe(pipefd);
@@ -93,7 +95,7 @@ int main(int argc, char *argv[])
 	dup2(pipefd[0], 0);
 	close_pipe(pipefd);
 
-	int fd2 = open(argv[4], O_WRONLY);
+	fd2 = open(argv[4], O_WRONLY);
 	dup2(fd2, 1);
 	path = search_command_path(environ, cmd2[0]);
 	execve(path, cmd2, environ);
