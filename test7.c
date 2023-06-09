@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 	pid_t pid;
 	extern char **environ;
 	int status;
-	int cmdnum = 3;
+	int cmdnum;
 	int old_read_end;
 	size_t i;
 
