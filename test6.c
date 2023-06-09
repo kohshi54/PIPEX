@@ -48,11 +48,13 @@ int main(void)
 				execve("/usr/bin/grep", cmd2, environ);
 			}
 		}
-		close(old_read_end);
+		if (cmdnum != 3)
+			close(old_read_end);
 		old_read_end = new_pipe[READ];
 		close(new_pipe[WRITE]);
 		waitpid(pid, &status, 0);
 		cmdnum--;
 	}
+	printf("success\n");
 	return (0);
 }
