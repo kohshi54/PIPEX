@@ -1,7 +1,9 @@
 #include "pipex.h"
 
-char *get_path_from_env(char **environ)
+char *get_path_from_env()
 {
+	extern char **environ;
+
 	while (*environ)
 	{
 		if (ft_strncmp(*environ, "PATH=", 5) == 0)
@@ -14,13 +16,14 @@ char *get_path_from_env(char **environ)
 	return ("not found");
 }
 
-char *get_command_path(char *command, char **environ)
+char *get_command_path(char *command)
 {
 	char *path;
 	char **path_array;
 	char *command_path;
+	extern char **environ;
 
-	path = get_path_from_env(environ);
+	path = get_path_from_env();
 	path_array = ft_split(path, ':');
 	command = ft_strjoin("/", command);
 	while (*path_array)
@@ -35,12 +38,13 @@ char *get_command_path(char *command, char **environ)
 	return ("not found");
 }
 
-void execute_command(char *cmdline, char **environ)
+void execute_command(char *cmdline)
 {
 	char **cmd;
 	char *path;
+	extern char **environ;
 
 	cmd = ft_split(cmdline, ' ');
-	path = get_command_path(cmd[0], environ);
+	path = get_command_path(cmd[0]);
 	execve(path, cmd, environ);
 }

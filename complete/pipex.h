@@ -12,8 +12,8 @@
 #define WRITE 1
 
 /* execute_command.c */
-char *get_path_from_env(char **environ);
-char *get_command_path(char *command, char **environ);
-void execute_command(char *cmdline, char **environ);
+char *get_path_from_env();
+char *get_command_path(char *command);
+void execute_command(char *cmdline);
 
 #endif
