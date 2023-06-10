@@ -53,26 +53,25 @@ int main(int argc, char *argv[])
 	validate_input(argc);
 	cmdnum = argc - 1;
 	i = 1;
-	while (cmdnum)
+	while (i <= cmdnum)
 	{
-		if (cmdnum != 1)
+		if (i != cmdnum)
 			pipe(new_pipe);
 		pid = fork();
 		if (pid == 0)
 		{
-			if (cmdnum == argc - 1)
+			if (i == 1)
 				execute_first(argv[i], new_pipe);
-			else if (cmdnum == 1)
+			else if (i == cmdnum)
 				execute_last(argv[i], old_read_end);
 			else
 				execute_middle(argv[i], new_pipe, old_read_end);
 		}
-		if (cmdnum != argc - 1)
+		if (i != 1)
 			close(old_read_end);
 		old_read_end = new_pipe[READ];
 		close(new_pipe[WRITE]);
 		waitpid(pid, &status, 0);
-		cmdnum--;
 		i++;
 	}
 	ft_printf("success\n");
