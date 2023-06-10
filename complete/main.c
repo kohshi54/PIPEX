@@ -7,7 +7,7 @@ void	execute_first(char *cmd, int new_pipe[2])
 	close(new_pipe[READ]);
 	dup2(new_pipe[WRITE], STDOUT_FILENO);
 	close(new_pipe[WRITE]);
-	execute_command(cmd, environ);
+	execute_command(cmd);
 }
 
 void	execute_last(char *cmd, int old_read_end)
@@ -16,7 +16,7 @@ void	execute_last(char *cmd, int old_read_end)
 
 	dup2(old_read_end, STDIN_FILENO);
 	close(old_read_end);
-	execute_command(cmd, environ);
+	execute_command(cmd);
 }
 
 void	execute_middle(char *cmd, int new_pipe[2], int old_read_end)
@@ -28,7 +28,7 @@ void	execute_middle(char *cmd, int new_pipe[2], int old_read_end)
 	close(old_read_end);
 	dup2(new_pipe[WRITE], STDOUT_FILENO);
 	close(new_pipe[WRITE]);
-	execute_command(cmd, environ);
+	execute_command(cmd);
 }
 
 void	validate_input(int argc)
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 	pid_t pid;
 	extern char **environ;
 	int status;
-	int cmdnum;
+	size_t cmdnum;
 	int old_read_end;
 	size_t i;
 

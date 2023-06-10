@@ -1,7 +1,6 @@
 NAME = pipex
 CC = cc
-# CFLAGS = -Wall -Wextra -Werror
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -Werror
 
 SRCS = main.c execute_command.c
 OBJS = $(SRCS:%.c=%.o)
