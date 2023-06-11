@@ -1,6 +1,6 @@
 #include "pipex.h"
 
-void	execute_first(char *cmd, int new_pipe[2])
+void execute_first(char *cmd, int new_pipe[2])
 {
 	extern char **environ;
 
@@ -10,7 +10,7 @@ void	execute_first(char *cmd, int new_pipe[2])
 	execute_command(cmd);
 }
 
-void	execute_last(char *cmd, int old_read_end)
+void execute_last(char *cmd, int old_read_end)
 {
 	extern char **environ;
 
@@ -19,7 +19,7 @@ void	execute_last(char *cmd, int old_read_end)
 	execute_command(cmd);
 }
 
-void	execute_middle(char *cmd, int new_pipe[2], int old_read_end)
+void execute_middle(char *cmd, int new_pipe[2], int old_read_end)
 {
 	extern char **environ;
 
@@ -31,7 +31,7 @@ void	execute_middle(char *cmd, int new_pipe[2], int old_read_end)
 	execute_command(cmd);
 }
 
-void	validate_input(int argc)
+void validate_input(int argc)
 {
 	if (argc < 3)
 	{
@@ -71,16 +71,21 @@ int main(int argc, char *argv[])
 			close(old_read_end);
 		old_read_end = new_pipe[READ];
 		close(new_pipe[WRITE]);
-		waitpid(pid, &status, 0);
+		// waitpid(pid, &status, 0);
 		i++;
+	}
+	while (cmdnum--)
+	{
+		wait(&status);
+		// waitpid(pid, &status, 0);
 	}
 	ft_printf("success\n");
 	return (0);
 }
 
 /*
-__attribute__((destructor))
-static void destructor(void){
-    system("leaks -q a.out");
+__attribute__((destructor)) static void destructor(void)
+{
+	system("leaks -q pipex");
 }
 */
