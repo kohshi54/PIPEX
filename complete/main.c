@@ -39,7 +39,7 @@ void	validate_input(int argc)
 		exit(0);
 	}
 }
-
+#include "fcntl.h"
 int main(int argc, char *argv[])
 {
 	int new_pipe[2];
